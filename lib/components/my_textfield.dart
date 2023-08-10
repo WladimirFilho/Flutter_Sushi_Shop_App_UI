@@ -10,6 +10,8 @@ class MyTextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
+        hintText: 'Search here',
+        hintStyle: TextStyle(color: Colors.grey),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: clearColor),
           borderRadius: BorderRadius.circular(12),

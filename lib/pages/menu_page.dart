@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sushi_app/components/food_tile.dart';
 import 'package:sushi_app/components/my_button.dart';
 import 'package:sushi_app/components/my_textfield.dart';
+import 'package:sushi_app/models/food_model.dart';
 import 'package:sushi_app/theme/colors.dart';
 
 class MenuPage extends StatefulWidget {
@@ -12,6 +14,21 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  List foodMenuList = [
+    FoodModel(
+      name: 'Salmon Sushi',
+      price: '21.00',
+      imagePath: 'lib/assets/sushi(2).png',
+      rating: '4.9',
+    ),
+    FoodModel(
+      name: 'Tuna',
+      price: '22.00',
+      imagePath: 'lib/assets/sushi(2).png',
+      rating: '4.9',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,25 +88,86 @@ class _MenuPageState extends State<MenuPage> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 25,
-            ),
+            const SizedBox(height: 25),
 
             // search bar
-            MyTextfield(),
+            const MyTextfield(),
             const SizedBox(height: 25),
 
             // menu list
-            Text(
-              'Food menu',
-              style: TextStyle(
-                color: Colors.grey[700],
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                'Food menu',
+                style: TextStyle(
+                  letterSpacing: 0.1,
+                  color: Colors.grey[700],
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
 
             // popular food
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: foodMenuList.length,
+                itemBuilder: (context, index) =>
+                    FoodTile(food: foodMenuList[index]),
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // popular food
+            Container(
+              margin: EdgeInsets.only(bottom: 30),
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey[200],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        'lib/assets/sushi(1).png',
+                        height: 60,
+                      ),
+                      const SizedBox(width: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // name
+                          Text(
+                            'Salmon Eggs',
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontSize: 18,
+                            ),
+                          ),
+
+                          // price
+                          Text(
+                            '\$21.00',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.favorite,
+                    color: primaryColor,
+                    size: 34,
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

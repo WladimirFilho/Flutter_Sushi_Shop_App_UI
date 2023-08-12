@@ -15,6 +15,14 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  bool isFavorite = true;
+
+  void favoriteFoodHandler() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
   List foodMenuList = [
     FoodModel(
       name: 'Salmon Sushi',
@@ -25,7 +33,7 @@ class _MenuPageState extends State<MenuPage> {
     FoodModel(
       name: 'Tuna',
       price: '22.00',
-      imagePath: 'lib/assets/sushi(2).png',
+      imagePath: 'lib/assets/sushi.png',
       rating: '4.9',
     ),
   ];
@@ -136,8 +144,8 @@ class _MenuPageState extends State<MenuPage> {
 
             // popular food
             Container(
-              margin: EdgeInsets.only(bottom: 30),
-              padding: EdgeInsets.all(20),
+              margin: const EdgeInsets.only(bottom: 30),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey[200],
@@ -175,10 +183,19 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                     ],
                   ),
-                  const Icon(
-                    Icons.favorite,
-                    color: primaryColor,
-                    size: 34,
+                  GestureDetector(
+                    onTap: () => favoriteFoodHandler(),
+                    child: isFavorite
+                        ? const Icon(
+                            Icons.favorite_border_outlined,
+                            color: primaryColor,
+                            size: 34,
+                          )
+                        : const Icon(
+                            Icons.favorite,
+                            color: primaryColor,
+                            size: 34,
+                          ),
                   )
                 ],
               ),

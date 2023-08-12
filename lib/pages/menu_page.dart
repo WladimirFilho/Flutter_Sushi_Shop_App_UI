@@ -4,6 +4,7 @@ import 'package:sushi_app/components/food_tile.dart';
 import 'package:sushi_app/components/my_button.dart';
 import 'package:sushi_app/components/my_textfield.dart';
 import 'package:sushi_app/models/food_model.dart';
+import 'package:sushi_app/pages/food_detail_page.dart';
 import 'package:sushi_app/theme/colors.dart';
 
 class MenuPage extends StatefulWidget {
@@ -29,10 +30,20 @@ class _MenuPageState extends State<MenuPage> {
     ),
   ];
 
+  // navigate to the food item details page
+  void navigateToFoodDetailsPage(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodDetailPage(food: foodMenuList[index]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: bgColor,
       appBar: AppBar(
         title: Text(
           'Sushi ',
@@ -113,8 +124,12 @@ class _MenuPageState extends State<MenuPage> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: foodMenuList.length,
-                itemBuilder: (context, index) =>
-                    FoodTile(food: foodMenuList[index]),
+                itemBuilder: (context, index) => FoodTile(
+                  food: foodMenuList[index],
+                  onTap: () {
+                    navigateToFoodDetailsPage(index);
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 25),

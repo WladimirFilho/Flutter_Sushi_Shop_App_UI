@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sushi_app/components/food_tile.dart';
 import 'package:sushi_app/components/my_button.dart';
 import 'package:sushi_app/components/my_textfield.dart';
 import 'package:sushi_app/models/food_model.dart';
+import 'package:sushi_app/models/shop.dart';
 import 'package:sushi_app/pages/food_detail_page.dart';
 import 'package:sushi_app/theme/colors.dart';
 
@@ -23,23 +25,12 @@ class _MenuPageState extends State<MenuPage> {
     });
   }
 
-  List foodMenuList = [
-    FoodModel(
-      name: 'Salmon Sushi',
-      price: '21.00',
-      imagePath: 'lib/assets/sushi(2).png',
-      rating: '4.9',
-    ),
-    FoodModel(
-      name: 'Tuna',
-      price: '22.00',
-      imagePath: 'lib/assets/sushi.png',
-      rating: '4.9',
-    ),
-  ];
-
   // navigate to the food item details page
   void navigateToFoodDetailsPage(int index) {
+    // get the shop and its details
+    final shop = context.read<Shop>();
+    final foodMenuList = shop.foodMenuList;
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -50,12 +41,32 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    // get the shop and its details
+    final shop = context.read<Shop>();
+    final foodMenuList = shop.foodMenuList;
+
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
+        foregroundColor: Colors.grey[800],
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/cartpage');
+              },
+              icon: const Icon(
+                Icons.shopping_cart,
+              ),
+            ),
+          ),
+        ],
         title: Text(
           'Sushi ',
           style: TextStyle(
+            fontWeight: FontWeight.w400,
             color: Colors.grey[800],
           ),
         ),

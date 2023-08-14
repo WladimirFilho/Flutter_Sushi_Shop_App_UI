@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sushi_app/components/my_button.dart';
 import 'package:sushi_app/models/food_model.dart';
+import 'package:sushi_app/models/shop.dart';
 import 'package:sushi_app/theme/colors.dart';
 
 class FoodDetailPage extends StatefulWidget {
-  final FoodModel food;
+  final Food food;
 
   const FoodDetailPage({
     super.key,
@@ -33,6 +35,52 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
     setState(() {
       currentCount++;
     });
+  }
+
+  void addToCart() {
+    // only add to cart of the quantity is greater than 0
+    if (currentCount > 0) {
+      // get access to the shop
+      final shop = context.read<Shop>();
+
+      // add to cart
+      shop.addToCart(widget.food, currentCount);
+
+      print(shop.cart.length);
+
+      // let the user know it was successful
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          backgroundColor: primaryColor,
+          content: const Text(
+            'Successfully added to the cart',
+            style: TextStyle(
+                color: clearColor, fontSize: 14, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                // pop once to get out of the dialog
+                Navigator.pop(context);
+
+                // pop again to back the page
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.done,
+                color: clearColor,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -96,7 +144,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip. ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip. ipsum dolor sit',
                     style: TextStyle(
                       height: 2,
                       color: Colors.grey[700],
@@ -177,12 +225,13 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
+                const SizedBox(height: 25),
 
                 // btn
-                MyButton(text: 'Add to cart', onTap: () {})
+                MyButton(
+                  text: 'Add to cart',
+                  onTap: () => addToCart(),
+                )
               ],
             ),
           ),

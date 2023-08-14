@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sushi_app/models/food_model.dart';
 
 class FoodTile extends StatelessWidget {
-  final FoodModel food;
+  final Food food;
   final void Function()? onTap;
 
   const FoodTile({
